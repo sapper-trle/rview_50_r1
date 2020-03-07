@@ -790,7 +790,7 @@ begin
     build_mesh_list(meshes,l);
     meshes.draw_mode:=0;
 
-    form1.caption:='Turbo Pascal''Room Viewer.- '+name;
+    form1.caption:='Turbo Pascal''s Room Viewer - '+name;
 
 
    if form1.scene.texture_mode=0 then begin form10.memo1.lines.add('Loading textures into opengl buffers...');l.opengl_LoadTextures( [form1.viewport],form1.scene.buffer_size); end;//cargar textures en opengl
