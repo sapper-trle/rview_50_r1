@@ -7725,20 +7725,20 @@ begin
                   //layer
                  8: begin layercolor:=find_layer(lay,linea);if layercolor<>0 then color:=lay.layer[layercolor].color; end;
                  //cordenadas x
-                10: x1:=trunc(strTofloat(linea)*1000);
-                11: x2:=trunc(strTofloat(linea)*1000);
-                12: x3:=trunc(strTofloat(linea)*1000);
-                13: x4:=trunc(strTofloat(linea)*1000);
+                10: x1:=round(strTofloat(linea)*1000);
+                11: x2:=round(strTofloat(linea)*1000);
+                12: x3:=round(strTofloat(linea)*1000);
+                13: x4:=round(strTofloat(linea)*1000);
                  //cordenadas y
-                20: y1:=trunc(strTofloat(linea)*-1000);
-                21: y2:=trunc(strTofloat(linea)*-1000);
-                22: y3:=trunc(strTofloat(linea)*-1000);
-                23: y4:=trunc(strTofloat(linea)*-1000);
+                20: y1:=round(strTofloat(linea)*-1000);
+                21: y2:=round(strTofloat(linea)*-1000);
+                22: y3:=round(strTofloat(linea)*-1000);
+                23: y4:=round(strTofloat(linea)*-1000);
                  //cordenadas z
-                30: z1:=trunc(strTofloat(linea)*-1000);
-                31: z2:=trunc(strTofloat(linea)*-1000);
-                32: z3:=trunc(strTofloat(linea)*-1000);
-                33: z4:=trunc(strTofloat(linea)*-1000);
+                30: z1:=round(strTofloat(linea)*-1000);
+                31: z2:=round(strTofloat(linea)*-1000);
+                32: z3:=round(strTofloat(linea)*-1000);
+                33: z4:=round(strTofloat(linea)*-1000);
                 //color
 //              62: color:=trunc(strTofloat(linea));
 
