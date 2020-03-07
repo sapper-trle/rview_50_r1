@@ -13,6 +13,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Image1: TImage;
+    Label4: TLabel;
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }

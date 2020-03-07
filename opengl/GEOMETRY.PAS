@@ -4576,20 +4576,20 @@ initialization
 //--------------------------------------------------------------
 
    // detect 3DNow! capable CPU (adapted from AMD's "3DNow! Porting Guide")
-   asm
-      pusha
-      mov  eax, $80000000
-      db $0F,$A2               /// cpuid
-      cmp  eax, $80000000
-      jbe @@No3DNow
-      mov  eax, $80000001
-      db $0F,$A2               /// cpuid
-      test edx, $80000000
-      jz @@No3DNow
-      mov vSIMD, 1
-@@No3DNow:
-      popa
-   end;
+//   asm
+//      pusha
+//      mov  eax, $80000000
+//      db $0F,$A2               /// cpuid
+//      cmp  eax, $80000000
+//      jbe @@No3DNow
+//      mov  eax, $80000001
+//      db $0F,$A2               /// cpuid
+//      test edx, $80000000
+//      jz @@No3DNow
+//      mov vSIMD, 1
+//@@No3DNow:
+//      popa
+//   end;
 
 end.
 
