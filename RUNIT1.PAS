@@ -1435,8 +1435,8 @@ f:textfile;
 begin
     l:=ttrlevel.create;
    //numeric international setting changed to american way.
-   decimalseparator:='.';
-   ThousandSeparator:=',';
+   FormatSettings.decimalseparator:='.';
+   FormatSettings.ThousandSeparator:=',';
     application.onhint:=form1.displayhint;
     //----------------
    //abrir el config.opt-------
