@@ -2693,13 +2693,14 @@ singledata:=rooms[x].room_info.zpos_room;
       aux:=rooms[x].vertices.num_vertices;
       Zblockwrite(f, aux, 4); //amount vertices in this layer
 
-      aux_word:=rooms[x].layers[0].unknownl1;
+      if rooms[x].num_layers<>0 then aux_word:=rooms[x].layers[0].unknownl1 else aux_word:=0;
       Zblockwrite(f, aux_word, 2); //unknow16
 
       Zblockwrite(f, rooms[x].quads.num_quads, 2); //amount rectangles in this layer
       Zblockwrite(f,rooms[x].triangles.num_triangles, 2); //amount triangles in this layer
 
-      Zblockwrite(f, rooms[x].layers[0].unknownl2, 46); //46 bytes.
+      if rooms[x].num_layers<>0 then Zblockwrite(f, rooms[x].layers[0].unknownl2, 46) else
+                                     Zblockwrite(f, buf[0], 46);
 
 
      //actualizar ofset9 y ofset10(start rectangles/triangles data info)
