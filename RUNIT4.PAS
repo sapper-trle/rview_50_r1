@@ -198,4 +198,10 @@ begin
 
 end;
 
+initialization
+finalization
+  a.textures.Free;
+  a2.textures.free;
+  a3.textures.Free;
+  a4.textures.Free;
 end.
