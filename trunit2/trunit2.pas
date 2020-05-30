@@ -547,7 +547,19 @@ end;
 
 {****************************}
 unk8 = record
-       data : array [1..36] of byte;
+       case integer of
+        0: (data : array [1..36] of byte);
+        1: (x,y,z : single;
+           Int,_in,_out : single;//still unsure about these
+           r,g,b : single;);
+end;
+
+unk5 = record
+       case integer of
+        0: (data : array[1..16] of Byte);
+        1: (u1,u2 : Word;
+            roomx,roomy,roomz:Single;);
+        //2: (u1u2:UInt32; b,c,d : Single;);
 end;
 
 tTr5unk8 = record
@@ -568,9 +580,9 @@ ttr5_unknowns = record
               unknown1:longint;
               room_color:longint;
               unknown2,unknown3,unknown4:longint;
-              unknown5:array[1..16] of byte;
+              unknown5:unk5;//array[1..16] of byte;
               unknown6:longint;
-              total_triangles,total_rectangles:longint;
+              total_triangles,total_rectangles:longword;
               unknown7:longint;
               lightsize,numberlights:longint;
               unknown9,unknown10,unknown11,unknown12,
@@ -601,6 +613,9 @@ troom      = record
              water        :     byte;
              d2           :     byte;
              room_color   :     longword;
+             water_scheme :     word; //tr3 and tr4 underwater scheme
+             room_group   :     byte; //group used by alternates rooms.
+
              tr5_flag     :     word;
 
 end;
@@ -948,6 +963,7 @@ Ttrlevel = class(tobject)
     function Save_Level(name:string):byte;
     function Save_Level2(name:string):byte;
 
+    function roomToStr(var r:troom):TStringList;
 
     procedure tr1TOtr2;
     procedure tr1TOtrc;
@@ -1483,6 +1499,37 @@ begin
     fnum_zones:=k;
 end;
 
+
+function Ttrlevel.roomToStr(var r: troom): TStringList;
+var
+  sl:TStringList;
+  s:string;
+  u:ttr5_unknowns;
+  L:tlayers;
+begin
+  sl:=TStringList.Create;
+  if tipo <> VTr5  then Exit;
+  sl.Append(Format('Num layers %d',[r.num_layers]));
+  sl.Append(Format('d0 %d lara light %d',[r.d0, r.Lara_light]));
+  sl.Append(Format('sand effect %d light mode %d',[r.sand_effect,r.light_mode]));
+  sl.Append(Format('water %d alternate %d d2 %d',[r.water,r.alternate,r.d2]));
+  sl.Append(Format('tr5_flag %d',[r.tr5_flag]));
+  u:=r.tr5_unknowns;
+  sl.Append(Format('tr5 unk5 %d %d %.2f %.2f %.2f',[u.unknown5.u1,u.unknown5.u2,u.unknown5.roomx,u.unknown5.roomy,u.unknown5.roomz]));
+  sl.Append(Format('tr5 room colour %d',[u.room_color]));
+  if r.num_layers<>0 then
+  begin
+    L:=r.layers[0];
+    sl.Append(Format(#9'unknownl1 %d unknownl2 %d',[L.unknownl1,L.unknownl2]));
+    sl.Append(Format(#9'unknownl3 %d unknownl4 %d unknownl5 %d',[L.unknownl3,L.unknownl4,L.unknownl5]));
+    sl.Append(Format(#9'filler2 %d filler3 %d',[L.filler2,L.filler3]));
+    sl.Append(Format(#9'num verts %d',[L.num_vertices]));
+  end;
+
+                           
+  Result:=sl;
+end;
+
 procedure ttrlevel.pnum_Anim_textures(k:longint);
 begin
      setlength(anim_textures,k);
@@ -1583,6 +1630,10 @@ ofset_wavs:longint;
 F2:FILE;
 PA:POINTER;
 porcent,porcent2:real;
+  ii: Integer;
+{$IFDEF  debug}
+  room_start,room_end:LongInt;
+{$ENDIF}
 begin
  //si L contiene ya contiene un nivel cargado
  //liberar las texturas y los sonidos en tr1.
@@ -1736,7 +1787,9 @@ num_rooms:=aux;
 
 porcent:=30/num_rooms;
 porcent2:=0;
-
+{$IFDEF  debug}
+room_start:=zFilePos(f);
+{$ENDIF}
 
 for x:=0 to num_rooms-1 do
 begin
@@ -1751,7 +1804,7 @@ begin
    Zblockread(f, rooms[x].tr5_unknowns.ublock1,4);
    Zblockread(f, rooms[x].tr5_unknowns.ublock2,4);
 
-   Zblockread(f, rooms[x].tr5_unknowns.ublock3,4);
+   Zblockread(f, rooms[x].tr5_unknowns.ublock3,4);//cdcdcdcd???
    Zblockread(f, rooms[x].tr5_unknowns.ublock4,4);
 
    Zblockread(f, rooms[x].room_info.xpos_room,4); //X room position
@@ -1765,9 +1818,9 @@ begin
 
    Zblockread(f, rooms[x].source_lights.num_sources,2); // amount spot lights.
    Zblockread(f, rooms[x].statics.num_static,2); // amount statics ornaments
-   Zblockread(f, rooms[x].tr5_unknowns.unknown2,4);
-   Zblockread(f, rooms[x].tr5_unknowns.unknown3,4);
-   Zblockread(f, rooms[x].tr5_unknowns.unknown4,4);
+   Zblockread(f, rooms[x].tr5_unknowns.unknown2,4); //reverbinfo,alternategroup,waterscheme
+   Zblockread(f, rooms[x].tr5_unknowns.unknown3,4); //filler 0x00007FFF
+   Zblockread(f, rooms[x].tr5_unknowns.unknown4,4); //filler 0x00007FFF
 
 
    Zblockread(f, aux, 4); //cdcdcdcd
@@ -1778,21 +1831,21 @@ begin
    Zblockread(f, rooms[x].tr5_flag,2); // Alternate room?
    Zblockread(f, buf, 10); //10 bytes bytes 0
    Zblockread(f, aux, 4); //cdcdcdcd
-   Zblockread(f, rooms[x].tr5_unknowns.unknown5[1],16); //unknown5
+   Zblockread(f, rooms[x].tr5_unknowns.unknown5.data[1],16); //unknown5
    Zblockread(f, aux, 4); //cdcdcdcd
    Zblockread(f, aux, 4); //cdcdcdcd
    Zblockread(f, aux, 4); //cdcdcdcd
    Zblockread(f, aux, 4); //cdcdcdcd
-   Zblockread(f, rooms[x].tr5_unknowns.unknown6,4); //unknown6
+   Zblockread(f, rooms[x].tr5_unknowns.unknown6,4); //unknown6 //->null room 0xcdcdcdcd
    Zblockread(f, aux, 4); //cdcdcdcd
    Zblockread(f, rooms[x].tr5_unknowns.total_triangles,4); //amount triangles
    Zblockread(f, rooms[x].tr5_unknowns.total_rectangles,4);
-   Zblockread(f, rooms[x].tr5_unknowns.unknown7,4);
+   Zblockread(f, rooms[x].tr5_unknowns.unknown7,4); //separator=0
    Zblockread(f, rooms[x].tr5_unknowns.lightsize,4);
    Zblockread(f, rooms[x].tr5_unknowns.numberlights,4);
    Zblockread(f, rooms[x].tr5unk8.num_unk8, 4); //unknown8.
-   Zblockread(f, rooms[x].tr5_unknowns.unknown9,4);
-   Zblockread(f, rooms[x].tr5_unknowns.unknown10,4);
+   Zblockread(f, rooms[x].tr5_unknowns.unknown9,4);//roomytop
+   Zblockread(f, rooms[x].tr5_unknowns.unknown10,4); //roomybottom
    Zblockread(f, rooms[x].num_layers, 4); //amount pieces in room.
    rooms[x].tr5_layers.num_layers:=rooms[x].num_layers;
 
@@ -1800,7 +1853,7 @@ begin
    Zblockread(f, rooms[x].tr5_unknowns.unknown12,4);
    Zblockread(f, rooms[x].tr5_unknowns.unknown13,4);
    Zblockread(f, rooms[x].tr5_unknowns.unknown14,4);
-   Zblockread(f, rooms[x].tr5_unknowns.unknown15,4);
+   Zblockread(f, rooms[x].tr5_unknowns.unknown15,4); //verticesSize
 
    Zblockread(f, aux, 4); //cdcdcdcd.
    Zblockread(f, aux, 4); //cdcdcdcd.
@@ -1887,7 +1940,9 @@ if progressbar<>nil then progressbar.progress:=50+trunc(porcent2);
 
 
 end; //end leer todos los rooms.
-
+{$ifdef debug}
+room_end:=zFilePos(f);
+{$endif}
 end;//fin version tr5 leer rooms en forma especial.
 //******************************************************
 //si version<tr5 entonces leer room data en forma normal
