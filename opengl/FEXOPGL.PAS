@@ -1528,7 +1528,7 @@ minz:integer;
 
 begin
 
-   wglMakeCurrent( getdc(pcontrol.handle), pRC);
+   wglMakeCurrent( {getdc(pcontrol.handle)}pdc, pRC);
    rc_already_selected:=true;
 
     fillchar(selectbuf,sizeof(selectbuf),chr(0));
