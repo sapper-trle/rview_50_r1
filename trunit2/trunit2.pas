@@ -2451,6 +2451,7 @@ ofset7,ofset8,ofset9,ofset10,ofset11:longint;
 data_start:longint;
 zupdate:longint;
 porcent,porcent2:real;
+singledata:single;
 begin
 
  if progressbar<>nil then progressbar.progress:=0;
@@ -2578,11 +2579,18 @@ begin
    Zblockwrite(f, buf, 10); //10 bytes bytes 0
    Zblockwrite(f, cd, 4); //cdcdcdcd
  //----------------------------------------
-// Zblockwrite(f, rooms[x].tr5_unknowns.unknown5[1],16); //unknown5 original
-   Zblockwrite(f, rooms[x].tr5_unknowns.unknown5[1], 4); //desconocido 4 bytes.
-   Zblockwrite(f, rooms[x].room_info.xpos_room,4); //X room position
-   Zblockwrite(f, cd, 4); //cdcdcdcd
-   Zblockwrite(f, rooms[x].room_info.zpos_room,4); //Z room position
+//    rooms[x].tr5_unknowns.unknown5[9]:=0;   //if not 0 dynamic lights don't work->binoculars,lasersight,guns
+//    rooms[x].tr5_unknowns.unknown5[10]:=0;
+//    rooms[x].tr5_unknowns.unknown5[11]:=0;
+//    rooms[x].tr5_unknowns.unknown5[12]:=0;
+//    Zblockwrite(f, rooms[x].tr5_unknowns.unknown5[1],16); //unknown5 original
+  Zblockwrite(f, rooms[x].tr5_unknowns.unknown5.data[1], 4); //desconocido 4 bytes.
+  singledata:=rooms[x].room_info.xpos_room;
+  Zblockwrite(f, singledata,4); //X room position
+  aux:=0;
+  Zblockwrite(f, aux, 4); //must be 0
+singledata:=rooms[x].room_info.zpos_room;
+ Zblockwrite(f, singledata,4); //Z room position
 //--------------------------
 
    Zblockwrite(f, cd, 4); //cdcdcdcd
@@ -3378,7 +3386,7 @@ begin
    fillchar(buf,10,chr(0));
    Zblockwrite(f, buf, 10); //10 bytes bytes 0
    Zblockwrite(f, cd, 4); //cdcdcdcd
-   Zblockwrite(f, rooms[x].tr5_unknowns.unknown5[1],16); //unknown5
+   Zblockwrite(f, rooms[x].tr5_unknowns.unknown5.data[1],16); //unknown5
    Zblockwrite(f, cd, 4); //cdcdcdcd
    Zblockwrite(f, cd, 4); //cdcdcdcd
    Zblockwrite(f, cd, 4); //cdcdcdcd
@@ -4286,7 +4294,7 @@ begin
     rooms[x].tr5_unknowns.total_rectangles:=rooms[x].quads.num_quads;
     rooms[x].tr5unk8.num_unk8:=0;
 
-    fillchar(rooms[x].tr5_unknowns.unknown5[1],16,0);
+    fillchar(rooms[x].tr5_unknowns.unknown5.data[1],16,0);
     //lara light
     trgb(rooms[x].tr5_unknowns.room_color).r:=(31-rooms[x].lara_light)*8;
     trgb(rooms[x].tr5_unknowns.room_color).g:=(31-rooms[x].lara_light)*8;
