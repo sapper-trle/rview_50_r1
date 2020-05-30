@@ -752,7 +752,9 @@ begin
  form1.refresh;
 
  form10.memo1.lines.clear;
+ {$IFNDEF debug}
  form10.show;
+ {$ENDIF}
  form10.gauge1.Progress:=0;
  l.progressbar:=form10.gauge1;
  form10.memo1.lines.add('Opening '+name+'...');
