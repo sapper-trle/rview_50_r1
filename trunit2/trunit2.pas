@@ -4612,7 +4612,10 @@ end;
 
 procedure ttrlevel.Free_Level;
 begin
-
+     if tipo<=vtr3 then FreeMem(texture_data);
+     if tipo>=vtr2 then FreeMem(texture_data2);
+     if tipo>=vtr4 then begin FreeMem(texture_data3);FreeMem(texture_data4);end;
+     if (tipo<vtr2) or (tipo>=vtr4) then FreeMem(samples_buffer);
 end;
 
 procedure ttrlevel.Addpage;
