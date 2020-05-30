@@ -67,6 +67,7 @@ max_rectangles= 4000;
    current_source_light:integer;
 
   constructor Create; override;
+  destructor Destroy; override;
   function center:glfloat;
   procedure sort_textures; overload;
   procedure sort_textures(room:integer);overload;
@@ -151,6 +152,15 @@ begin
 
 end;
 //-------------------------
+
+destructor tr_scene.Destroy;
+var
+  k:Integer;
+begin
+   for k:=1 to 2 do rectan_list[k].Free;
+   for k:=1 to 2 do trian_list[k].Free;
+  inherited;
+end;
 
 procedure tr_scene.DoRender;
 var
