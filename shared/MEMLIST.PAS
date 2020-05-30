@@ -100,6 +100,7 @@ end;
 
 destructor Tlistmem.Destroy;
 begin
+  FList.Free;
   inherited Destroy;
 end;
 
@@ -202,7 +203,16 @@ end;
 
 
 procedure tlistmem.clear;
+var
+  i:Integer;
+  node:pnode;
 begin
+   for I:=0 to FList.Count-1 do
+   begin
+     node:=FList[I];
+     Dispose(node.data);
+     Dispose(node);
+   end;
    flist.clear;
 end;
 
