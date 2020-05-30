@@ -1447,6 +1447,7 @@ begin
     if not fileExists(apath+'config.opt') then
     begin
          showmessage('Config.opt file not found!');
+         l.Free;
          halt;
     end;
     assignFile(f,apath+'config.opt');
@@ -1477,6 +1478,7 @@ begin
     solid_bitmap.LoadFromFile(ExtractFilePath(application.exename)+'solid.bmp');
     scene.solid_bitmap:=3999;
     Opgl_define_Texture(scene.solid_bitmap,solid_bitmap,scene.buffer_size,[form1.viewport]);
+    solid_bitmap.Free;
     scene.L:=L;
     scene.tabla_texture:=@tx;
     scene.meshes:=@meshes;
@@ -1882,7 +1884,16 @@ end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+     l.Free_Level;
+     l.Free;
+     viewport.Free;
+     Scene.Free;
+     camera.Free;
+     tempo.Free; //unit 9
+     tx.textures.Free;
+     tx.cur_tile.Free;
     save_states;
+    recent_files.Free;
 end;
 
 
