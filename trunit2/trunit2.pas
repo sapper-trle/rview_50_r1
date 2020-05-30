@@ -27,6 +27,8 @@ VTr3 = 5; //Tr3
 Vtr4 = 6; //Tr4
 VTr5 = 7; //TRc.
 
+max_mesh_vertices = 5000;
+max_mesh_polys = 5000;
 
 type tword = record
       byte1,byte2:byte;
@@ -474,40 +476,40 @@ type
 
 tvertice_list = record
                 num_vertices:word;
-                vertice : array [1..1500] of tvertice;
-                vertice2: array [1..1500] of tvertice2;
-                vertice3: array [1..1500] of tvertice3;
+                vertice : array [1..10000] of tvertice;
+                vertice2: array [1..10000] of tvertice2;
+                vertice3: array [1..10000] of tvertice3;
 end;
 
 
 Tquad_list = record
               num_quads  : word;
-              quad       : array[1..2000] of tquad;
-              quad2      : array[1..2000] of tquad2;
+              quad       : array[1..10000] of tquad;
+              quad2      : array[1..10000] of tquad2;
 end;
 
 ttriangle_list = record
                num_triangles  :Word;
-               Triangle       :array[1..1250] of Ttriangle;
-               Triangle2      :array[1..1250] of Ttriangle2;
+               Triangle       :array[1..10000] of Ttriangle;
+               Triangle2      :array[1..10000] of Ttriangle2;
 end;
 
 //****************************
 
 tvertice_list2 = record
                 num_vertices:word;
-                vertice3: array [1..1500] of tvertice3;
+                vertice3: array [1..10000] of tvertice3;
 end;
 
 
 Tquad_list2 = record
               num_quads  : word;
-              quad2      : array[1..2000] of tquad2;
+              quad2      : array[1..10000] of tquad2;
 end;
 
 ttriangle_list2 = record
                num_triangles  :Word;
-               Triangle2      :array[1..1250] of Ttriangle2;
+               Triangle2      :array[1..10000] of Ttriangle2;
 end;
 
 {****************************}
@@ -538,8 +540,8 @@ end;
 
 Tstatic_list = record
                num_static:word;
-               static    : array[1..50] of tstatic;
-               static2    : array[1..50] of tstatic2;
+               static    : array[1..300] of tstatic;
+               static2    : array[1..300] of tstatic2;
 
 end;
 
@@ -1011,13 +1013,13 @@ end;
 {----------------------------------------}
 Tpoly4_list = record
           num_poly4 : word;
-          poly4 : array[1..3000] of tpoly4;
+          poly4 : array[1..5000] of tpoly4;
 end;
 
 {----------------------------------------}
 Tpoly3_list = record
           num_poly3 : word;
-          poly3 : array[1..1250] of tpoly3;
+          poly3 : array[1..3000] of tpoly3;
 end;
 
 
@@ -1099,18 +1101,18 @@ Tmesh = record
         sphere_z:smallint;
         sphere_radius:integer;
         num_vertices:word;
-        vertices : array [0..500] of mvertice;
+        vertices : array [0..max_mesh_vertices] of mvertice;
         num_normals:smallint;
-        normals : array [0..500] of mvertice;
-        lights : array [0..500] of smallint;
+        normals : array [0..max_mesh_vertices] of mvertice;
+        lights : array [0..max_mesh_vertices] of smallint;
         Num_textured_rectangles:word;
-        textured_rectangles: array[0..500] of tquad2;
+        textured_rectangles: array[0..max_mesh_polys] of tquad2;
         Num_textured_triangles:word;
-        textured_triangles: array[0..300] of ttriangle2;
+        textured_triangles: array[0..max_mesh_polys] of ttriangle2;
         num_colored_rectangles:word;
-        colored_rectangles: array[0..300] of tquad2;
+        colored_rectangles: array[0..max_mesh_polys] of tquad2;
         num_colored_triangles:word;
-        colored_triangles: array[0..300] of ttriangle2;
+        colored_triangles: array[0..max_mesh_polys] of ttriangle2;
         //auxiliar fields
         minx,miny,minz,maxx,maxy,maxz:real;
         despx,despy,despz:real;
