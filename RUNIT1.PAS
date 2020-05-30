@@ -798,7 +798,7 @@ begin
    form1.scene.render1:=1;
    form1.scene.render2:=2;
    form1.scene.sort_textures;
-
+   Form1.Scene.current_only:=Form3.CheckBox2.Checked;
    form1.scene.center;
    form1.viewport.getdimension(form1.scene);
    form1.viewport.center;
