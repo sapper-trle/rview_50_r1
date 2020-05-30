@@ -1497,6 +1497,9 @@ begin
 
    //initialize the global sphere
    sphere:=glunewquadric;
+   {$ifdef DEBUG}
+    reportmemoryleaksonshutdown:=True;
+   {$endif}
 
 end;
 
