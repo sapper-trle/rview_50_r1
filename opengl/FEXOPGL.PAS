@@ -986,7 +986,7 @@ begin
    Opgl_SetDCPixelFormat(pdc,buffer_size);
    pRC := wglCreateContext(pDC);
 
-   wglMakeCurrent( getdc(pcontrol.handle), pRC);
+   wglMakeCurrent( pDC{getdc(pcontrol.handle)}, pRC);
    //---enable some states-----
    //for atis
 // gldepthfunc(gl_greater); //for default is gl_less
@@ -1003,12 +1003,17 @@ begin
    //viewport
    UpdateArea;
    wglMakeCurrent(0,0);
+   //ReleaseDC(pcontrol.Handle,pDC);
 end;
 //-------------
 
 procedure Tglviewport.Setcurrent;
+var
+  hDC:Cardinal;
 begin
-    wglMakeCurrent( getdc(pcontrol.handle), pRC);
+    hDC:= pDC;//getdc(pcontrol.handle);
+    wglMakeCurrent( hDC{getdc(pcontrol.handle)}, pRC);
+    //ReleaseDC(pcontrol.handle,hDC);
 end;
 
 procedure Tglviewport.sharelists(var v:tglviewport);
@@ -1083,7 +1088,7 @@ Procedure Tglviewport.ReleaseRC;
 begin
   wglMakeCurrent(0, 0);
   wglDeleteContext(pRC);
-  ReleaseDC(Pcontrol.Handle, getdc(pcontrol.handle));
+  ReleaseDC(Pcontrol.Handle, pDC{getdc(pcontrol.handle)});
   Active:=False;
 end;
 //-------------
@@ -1110,9 +1115,10 @@ end;
 
 var
 br,bg,bb:byte;
+hDC:Cardinal;
 begin
-
- if not rc_already_selected then wglMakeCurrent( getdc(pcontrol.handle), pRC);
+ hDC:= pDC;//getdc(pcontrol.handle);
+ if not rc_already_selected then wglMakeCurrent( hDC{getdc(pcontrol.handle)}, pRC);
  Set8087CW($133F); //i don't know if this fix the invalid floting point error,
 
   BeginPaint(pcontrol.Handle, ps);
@@ -1155,10 +1161,10 @@ begin
      GlMatrixMode(Gl_projection);
      glpopmatrix;
      glflush;
-     SwapBuffers(getdc(pcontrol.handle));
+     SwapBuffers(hDC{getdc(pcontrol.handle)});
 
  EndPaint(pcontrol.Handle, ps);
-
+  ///ReleaseDC(pcontrol.Handle,hDC);
  //seems that somevideo cards need to close the Device context in each frame.
  if not rc_already_selected then wglMakeCurrent(0,0);
  //lets try to put next code here to avoid the invalid floating point error.
@@ -1282,9 +1288,13 @@ begin
 end;
 
 procedure Tglviewport.ControlResize(Sender: TObject);
+var
+  hDC:Cardinal;
 begin
     if assigned(OldOnresize) then OldOnresize(sender);
-    wglMakeCurrent( getdc(pcontrol.handle), pRC);
+    hDC:= pDC;//getdc(pcontrol.handle);
+    wglMakeCurrent( hDC{getdc(pcontrol.handle)}, pRC);
+    ///ReleaseDC(Pcontrol.Handle,hDC);
     UpdateArea;
     redraw;
 end;
