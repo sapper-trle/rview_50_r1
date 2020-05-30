@@ -1930,6 +1930,25 @@ begin
    //merge all layers info.
    merge_layers(rooms[x].tr5_layers, rooms[x].vertices, rooms[x].quads, rooms[x].triangles);
 
+//---now let's put whole room dimension to the first layer, i am going to
+//save the whole room using just one leyer later.
+    //Layer box
+    rooms[x].layers[0].unknownl1:=0;
+    rooms[x].layers[0].unknownl2:=0;
+    rooms[x].layers[0].filler2:=0;
+    rooms[x].layers[0].filler3:=0;
+
+    rooms[x].layers[0].unknownl3:=3552812; //?
+    rooms[x].layers[0].unknownl4:=36576740;//?
+    rooms[x].layers[0].unknownl5:=23403952;//?
+
+    rooms[x].layers[0].x1:=0;
+    rooms[x].layers[0].x2:=rooms[x].sectors.ancho*1024;
+    rooms[x].layers[0].y1:=rooms[x].room_info.ymax;
+    rooms[x].layers[0].y2:=rooms[x].room_info.ymin;
+    rooms[x].layers[0].z1:=0;
+    rooms[x].layers[0].z2:=rooms[x].sectors.largo*1024;
+    
    end; //si amount layers<>0
 
 rooms[x].tr5_numpads:=(chunk_start+chunk_size)-zfilepos(f);
