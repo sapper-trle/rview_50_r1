@@ -298,7 +298,8 @@ begin
 
 
     find_sector_from_coordinates(x,z,col,row,sector);
-    altura:=trunc(((l.rooms[room-1].sectors.sector[sector].floor_height*256)-y)/256);
+    if (sector >=1) and (sector <= (l.rooms[room-1].sectors.largo * l.rooms[room-1].sectors.ancho)) then
+      altura:=trunc(((l.rooms[room-1].sectors.sector[sector].floor_height*256)-y)/256);
     form3.spinedit8.Value:=altura;
     //------------------
 end;
