@@ -1825,7 +1825,9 @@ begin
 
    Zblockread(f, aux, 4); //cdcdcdcd
    Zblockread(f, aux, 4); //cdcdcdcd
-   Zblockread(f, buf, 6); //6 bytes ffffffffff
+   //Zblockread(f, buf, 6); //6 bytes ffffffffff
+   zblockread(f, aux,4); //0xffffffff
+   zblockread(f, rooms[x].alternate,2);
    Zblockread(f, rooms[x].water,1); // room flag
    Zblockread(f, rooms[x].d2,1); // room flag2
    Zblockread(f, rooms[x].tr5_flag,2); // Alternate room?
@@ -2545,8 +2547,10 @@ begin
 
    Zblockwrite(f, cd, 4); //cdcdcdcd
    Zblockwrite(f, cd, 4); //cdcdcdcd
-   fillchar(buf,6,chr(255));
-   Zblockwrite(f, buf, 6); //6 bytes ffffffffff
+   //fillchar(buf,6,chr(255));
+   fillchar(buf,4,chr(255));
+   Zblockwrite(f, buf, 4); //6 bytes ffffffffff
+   zblockwrite(f, rooms[x].alternate,2);//sapper
    Zblockwrite(f, rooms[x].water,1); // room flag
    Zblockwrite(f, rooms[x].d2,1); // room flag2
    Zblockwrite(f, rooms[x].tr5_flag,2); // Alternate room?
