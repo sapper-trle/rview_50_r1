@@ -324,7 +324,7 @@ begin
       xxpos:=pos('=',rectan_list[xroom].strings[k-1]);
       ntexture:=strToint(copy(rectan_list[xroom].strings[k-1],1,xxpos-1));
       i:=strToint(copy(rectan_list[xroom].strings[k-1],xxpos+1,100));
-      ntexture:=(l.rooms[room].quads.quad[i].texture and $0fff);
+      ntexture:=(l.rooms[room].quads.quad[i].texture and $7fff);
      if cur_texture<>ntexture then
      begin
         case texture_mode of
@@ -459,7 +459,7 @@ w_color:=clt[zindex];
       xxpos:=pos('=',trian_list[xroom].strings[k-1]);
       ntexture:=strToint(copy(trian_list[xroom].strings[k-1],1,xxpos-1));
       i:=strToint(copy(trian_list[xroom].strings[k-1],xxpos+1,100));
-      ntexture:=(l.rooms[room].triangles.triangle[i].texture and $0fff);
+      ntexture:=(l.rooms[room].triangles.triangle[i].texture and $7fff);
      if cur_texture<>ntexture then
      begin
         case texture_mode of
@@ -748,7 +748,7 @@ begin
       xxpos:=pos('=',rectan_list[xroom].strings[k-1]);
       ntexture:=strToint(copy(rectan_list[xroom].strings[k-1],1,xxpos-1));
       i:=strToint(copy(rectan_list[xroom].strings[k-1],xxpos+1,100));
-      ntexture:=(l.rooms[room].quads.quad[i].texture and $0fff);
+      ntexture:=(l.rooms[room].quads.quad[i].texture and $7fff);
      if cur_texture<>ntexture then
      begin
         case texture_mode of
@@ -877,7 +877,7 @@ begin
       xxpos:=pos('=',trian_list[xroom].strings[k-1]);
       ntexture:=strToint(copy(trian_list[xroom].strings[k-1],1,xxpos-1));
       i:=strToint(copy(trian_list[xroom].strings[k-1],xxpos+1,100));
-      ntexture:=(l.rooms[room].triangles.triangle[i].texture and $0fff);
+      ntexture:=(l.rooms[room].triangles.triangle[i].texture and $7fff);
      if cur_texture<>ntexture then
      begin
         case texture_mode of
@@ -1321,12 +1321,12 @@ begin
    textura:=0;
    if index<=l.rooms[render1-1].quads.num_quads then
    begin
-       textura:=l.rooms[render1-1].quads.quad[index].texture and $0fff ;
+       textura:=l.rooms[render1-1].quads.quad[index].texture and $7fff ;
    end //si se hizo clik en un quad
    else
    begin
        index:=index-l.rooms[render1-1].quads.num_quads;
-       textura:=l.rooms[render1-1].triangles.triangle[index].texture and $0fff;
+       textura:=l.rooms[render1-1].triangles.triangle[index].texture and $7fff;
    end;//si se hizo click  en un triangulo.
    tr_get_texture:=textura;
 end;

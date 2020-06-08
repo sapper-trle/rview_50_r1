@@ -8913,7 +8913,7 @@ else
    //---
     for num:=0 to num_textures-1 do
     begin
-       des:=(Textures[num].tile and $0fff)*256;
+       des:=(Textures[num].tile and $7fff)*256;
 
        x1:=Textures[num].x1;
        y1:=Textures[num].y1;
@@ -9476,7 +9476,7 @@ end;
        x3:=(x3/escala);y3:=(y3/escala)*-1;z3:=(z3/escala)*-1;
        x4:=(x4/escala);y4:=(y4/escala)*-1;z4:=(z4/escala)*-1;
 
-    texture:=m.meshes[nmesh].textured_rectangles[k].texture and $0fff;
+    texture:=m.meshes[nmesh].textured_rectangles[k].texture and $7fff;
     xglbindtexture(gl_texture_2d,texture+1);
     xset_perspective_correct(perspective_correct);
 
@@ -9526,7 +9526,7 @@ end;
        x3:=(x3/escala);y3:=(y3/escala)*-1;z3:=(z3/escala)*-1;
 
 
-    texture:=m.meshes[nmesh].textured_triangles[k].texture and $0fff;
+    texture:=m.meshes[nmesh].textured_triangles[k].texture and $7fff;
     xglbindtexture(gl_texture_2d,texture+1);
     xset_perspective_correct(perspective_correct);
 
@@ -9706,7 +9706,7 @@ end;
 
 
     //get texture id
-    texture:=m.meshes[nmesh].textured_rectangles[k].texture and $0fff;
+    texture:=m.meshes[nmesh].textured_rectangles[k].texture and $7fff;
     case m.draw_mode of
          1:begin xglbindtexture(gl_texture_2d, m.solid_texture);xset_perspective_correct(perspective_correct);end; //solid mode
          2:begin xglbindtexture(gl_texture_2d,texture+1);xset_perspective_correct(perspective_correct);end; //texture mode
@@ -9763,7 +9763,7 @@ end;
        x3:=(x3/escala);y3:=(y3/escala)*-1;z3:=(z3/escala)*-1;
 
 
-    texture:=m.meshes[nmesh].textured_triangles[k].texture and $0fff;
+    texture:=m.meshes[nmesh].textured_triangles[k].texture and $7fff;
     case m.draw_mode of
          1:begin xglbindtexture(gl_texture_2d, m.solid_texture);xset_perspective_correct(perspective_correct);end; //solid mode
          2:begin xglbindtexture(gl_texture_2d,texture+1);xset_perspective_correct(perspective_correct);end; //texture mode
@@ -10022,7 +10022,7 @@ end;
        color3:=255-color3;color4:=255-color4;
 
     //get texture id
-    texture:=m.meshes[nmesh].textured_rectangles[k].texture and $0fff;
+    texture:=m.meshes[nmesh].textured_rectangles[k].texture and $7fff;
     case m.draw_mode of
          1:begin xglbindtexture(gl_texture_2d, m.solid_texture);xset_perspective_correct(perspective_correct);end; //solid mode
          2:begin xglbindtexture(gl_texture_2d,texture+1);xset_perspective_correct(perspective_correct);end; //texture mode
@@ -10106,7 +10106,7 @@ end;
        color3:=255-color3;
 
 
-    texture:=m.meshes[nmesh].textured_triangles[k].texture and $0fff;
+    texture:=m.meshes[nmesh].textured_triangles[k].texture and $7fff;
     case m.draw_mode of
          1:begin xglbindtexture(gl_texture_2d, m.solid_texture);xset_perspective_correct(perspective_correct);end; //solid mode
          2:begin xglbindtexture(gl_texture_2d,texture+1);xset_perspective_correct(perspective_correct);end; //texture mode

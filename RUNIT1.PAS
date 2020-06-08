@@ -1476,7 +1476,7 @@ begin
 
     solid_bitmap:=tbitmap.create;
     solid_bitmap.LoadFromFile(ExtractFilePath(application.exename)+'solid.bmp');
-    scene.solid_bitmap:=3999;
+    scene.solid_bitmap:=20000;
     Opgl_define_Texture(scene.solid_bitmap,solid_bitmap,scene.buffer_size,[form1.viewport]);
     solid_bitmap.Free;
     scene.L:=L;
@@ -1959,13 +1959,13 @@ begin
   begin
       for m:=1 to l.rooms[k].quads.num_quads do
       begin
-         if (l.rooms[k].quads.quad[m].texture and $0fff)=textid1
+         if (l.rooms[k].quads.quad[m].texture and $7fff)=textid1
          then begin l.rooms[k].quads.quad[m].texture:=textid2;l.rooms[k].quads.quad2[m].texture:=textid2;end;
       end;//todos los quads
 
       for m:=1 to l.rooms[k].triangles.num_triangles do
       begin
-         if (l.rooms[k].triangles.triangle[m].texture and $0fff)=textid1
+         if (l.rooms[k].triangles.triangle[m].texture and $7fff)=textid1
          then begin l.rooms[k].triangles.triangle[m].texture:=textid2;l.rooms[k].triangles.triangle2[m].texture:=textid2;end;
       end;//todos los triangles
    end;//todos los cuartos
