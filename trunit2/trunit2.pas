@@ -550,8 +550,9 @@ unk8 = record
        case integer of
         0: (data : array [1..36] of byte);
         1: (x,y,z : single;
-           Int,_in,_out : single;//still unsure about these
+           _out,Int,_in : single;//still unsure about these
            r,g,b : single;);
+
 end;
 
 unk5 = record
@@ -2640,7 +2641,17 @@ singledata:=rooms[x].room_info.zpos_room;
 
    //write source lights
    Zblockwrite(f, rooms[x].source_lights.source_light4,rooms[x].source_lights.num_sources*sizeof(tsource_light4));
-
+   {$IFDEF DEBUG}
+     if {(x=2) and} (rooms[x].tr5unk8.num_unk8>0)then
+     begin
+       rooms[x].tr5unk8.data[0].r :=0.0;
+       rooms[x].tr5unk8.data[0].g :=1.0;
+       rooms[x].tr5unk8.data[0].b :=0.0;
+       rooms[x].tr5unk8.data[0].Int :=4000000.0;
+       rooms[x].tr5unk8.data[0]._out :=4000.0;
+       rooms[x].tr5unk8.data[0]._in :=4000.0;
+     end;
+   {$ENDIF}
    //escribir structura desconocida, 36 bytes por registros.
    Zblockwrite(f,rooms[x].tr5unk8.data, rooms[x].tr5unk8.num_unk8*36);
 
